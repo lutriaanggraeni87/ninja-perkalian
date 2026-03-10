@@ -834,17 +834,39 @@ var imgKarakter = document.getElementById('karakter-pemain');
   }
 }
       
-  function tampilkanLeaderboard(data) {
-  console.log("Memulai proses render tabel...");
+ // PASTIKAN IBU SUDAH PUNYA VARIABEL scriptURL DI ATAS (Link Google Script /exec)
+// var scriptURL = "https://script.google.com/macros/s/KODE_IBU/exec";
+
+function muatLeaderboard() {
+  console.log("Mencoba mengambil data dari Google Sheets...");
+  
+  // Tampilkan loading sebentar
+  var isiLB = document.getElementById('isi-lb');
+  if(isiLB) isiLB.innerHTML = "<tr><td colspan='4'>Memanggil Para Ninja...</td></tr>";
+
+  // Kita gunakan fetch agar bisa jalan di GitHub
+  fetch(scriptURL + "?action=getLeaderboard")
+    .then(response => response.json())
+    .then(data => {
+      console.log("Data diterima dari Server:", data);
+      tampilkanLeaderboard(data); // Panggil fungsi render yang Ibu punya
+    })
+    .catch(error => {
+      console.error("Gagal ambil data:", error);
+      if(isiLB) isiLB.innerHTML = "<tr><td colspan='4'>Gagal koneksi ke Dojang.</td></tr>";
+    });
+}
+
+function tampilkanLeaderboard(data) {
   var isiLB = document.getElementById('isi-lb');
   var wadahLB = document.getElementById('tampil-leaderboard');
   
   if (!isiLB) return;
   
   // Paksa wadahnya muncul
-  if(wadahLB) wadahLB.style.display = "block";
+  if(wadahLB) wadahLB.style.display = "flex"; // Biasanya pakai flex untuk overlay
   
-  isiLB.innerHTML = ""; // Bersihkan isi lama
+  isiLB.innerHTML = ""; 
 
   if (!data || data.length === 0) {
     isiLB.innerHTML = "<tr><td colspan='4' style='padding:10px; text-align:center;'>Belum ada data Ninja.</td></tr>";
@@ -853,9 +875,8 @@ var imgKarakter = document.getElementById('karakter-pemain');
 
   data.forEach(function(ninja) {
     var baris = document.createElement('tr');
-    baris.style.borderBottom = "1px solid #eee";
+    baris.style.borderBottom = "1px solid #ddd";
     
-    // Gunakan warna hitam pekat agar terbaca di background putih
     baris.innerHTML = `
       <td style="padding: 8px; text-align: left; color: #c0392b; font-weight: bold;">${(ninja.nama || "-").toUpperCase()}</td>
       <td style="padding: 8px; color: #333;">${ninja.kelas || "-"}</td>
@@ -1019,6 +1040,7 @@ var imgKarakter = document.getElementById('karakter-pemain');
   </body>
 
 </html>
+
 
 
 
