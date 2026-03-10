@@ -17,7 +17,7 @@
   position: relative; 
   overflow: visible; /* Izinkan elemen di dalamnya 'napas' keluar */
   box-shadow: 0 0 20px rgba(0,0,0,0.8); 
-  padding-bottom: 120px; /* Ruang ekstra besar di bawah agar tombol tidak tertutup footer */
+  padding-bottom: 50px; /* Ruang ekstra besar di bawah agar tombol tidak tertutup footer */
 }      .layar { width: 100%; height: 100%; position: absolute; top: 0; left: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; background-size: cover; background-position: center; }
       #layar-judul { background-image: url('https://drive.google.com/thumbnail?id=1-UYPyRH8oqdFND2QS9Xns4-1LH067xiX&sz=w800'); }
       #layar-cerita { background-size: contain; background-repeat: no-repeat; background-position: center; background-color: #000; cursor: pointer; }
@@ -122,22 +122,16 @@
 }
 
 #papan-kontrol-css {
-   display: grid !important; 
+  display: grid !important; 
   grid-template-columns: repeat(3, 1fr) !important; 
-  gap: 4px;
-  
-  /* UKURAN DAN POSISI */
-  width: 75%;
-  max-width: 240px;
-  margin: 20px auto;
-  box-shadow: 0 8px 15px rgba(0,0,0,0.8);
-  z-index: 1000;
-  
-  /* AGAR MENGAPUNG DI ATAS FOOTER UNGU */
-  position: relative;
-  bottom: 80px; 
-  left: 50%;
-  transform: translateX(-50%);
+  gap: 8px;
+  width: 90%;
+  max-width: 300px;
+  position: relative; /* Bukan fixed */
+  margin: 20px auto; 
+  bottom: 0;
+  left: 0;
+  transform: none;
 }
 .tombol-angka {
   padding: 5px 0 !important; /* Tombol dibuat lebih tipis */
@@ -281,8 +275,9 @@
   width: 100%; 
   background-color: #8e44ad; 
   color: white; 
-  text-align: center; 
-  padding: 10px 0; 
+  text-align: center;
+  margin-top: 30px;
+  padding: 15px 0; 
   font-size: 14px; 
   font-weight: bold; 
   z-index: 110; 
@@ -1011,6 +1006,7 @@ var imgKarakter = document.getElementById('karakter-pemain');
   </body>
 
 </html>
+
 
 
 
