@@ -785,10 +785,41 @@ var imgKarakter = document.getElementById('karakter-pemain');
     }
 
   } 
-  // --- JIKA SOAL HABIS (LULUS / SELESAI) ---
-  else {
-    statusSoalAktif = false;
-    if(typeof intervalTimer !== 'undefined') clearInterval(intervalTimer);
+  // JIKA SOAL HABIS (NAIK SABUK)
+  if (indeksSoalSekarang >= dataSoalLevelIni.length) {
+    // 1. Simpan skor dulu ke Sheet (Bertahap)
+    simpanSkor(); 
+
+    let idxLevel = urutanLevel.indexOf(levelSekarang);
+    
+    // 2. Cek apakah masih ada level selanjutnya?
+    if (idxLevel < urutanLevel.length - 1) {
+      levelSekarang = urutanLevel[idxLevel + 1]; 
+      indeksSoalSekarang = 0;
+      alert("Hebat! Kamu Lulus Sabuk " + urutanLevel[idxLevel] + ". Sekarang lanjut ke " + levelSekarang);
+      muatSoal(); 
+    } else {
+      // 3. Jika benar-benar selesai Post-Test
+      document.getElementById('layar-gameplay').style.display = 'none';
+      document.getElementById('area-selesai').style.display = 'flex';
+      alert("Luar Biasa! Seluruh tingkatan Ninja telah kamu kuasai!");
+    }
+    return;
+  }
+
+  // LANJUT TAMPILKAN SOAL
+  statusSoalAktif = true;
+  dataSoalAktif = dataSoalLevelIni;
+  var soal = dataSoalAktif[indeksSoalSekarang];
+  
+  document.getElementById('teks-soal').innerText = soal.pertanyaan;
+  document.getElementById('info-level').innerText = "SABUK: " + levelSekarang.toUpperCase();
+  document.getElementById('info-skor').innerText = "SKOR: " + skorSaatIni;
+  
+  inputAngka = "";
+  document.getElementById('display-jawaban').innerText = "?";
+  mulaiTimer();
+}
     
     // Matikan papan tombol secara paksa (Anti-Bandel)
     var papan = document.getElementById('papan-kontrol-css');
@@ -816,18 +847,6 @@ var imgKarakter = document.getElementById('karakter-pemain');
       judulLulus.style.marginTop = "50px";
       judulLulus.style.fontSize = "1.2rem";
     }
-// Cek apakah masih ada level berikutnya?
-    if (idxLevel < urutanLevel.length - 1) {
-      levelSekarang = urutanLevel[idxLevel + 1]; // Naik dari Coklat ke Hitam, lalu ke Post-Test
-      indeksSoalSekarang = 0;
-      alert("Hebat! Kamu naik ke level: " + levelSekarang);
-      muatSoal(); // Jalankan level baru
-    } else {
-      // Jika sudah selesai Post-Test, baru jalankan simpanSkor
-      simpanSkor(); 
-    }
-    return;
-  }
     // Tampilkan Skor & Leaderboard
     document.getElementById('skor-akhir').innerText = "Skor: " + skorSaatIni;
     document.getElementById('area-selesai').style.display = 'flex';
@@ -1049,6 +1068,7 @@ if (levelSekarang === "Kuning") {
   </body>
 
 </html>
+
 
 
 
