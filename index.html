@@ -397,7 +397,7 @@
   const scriptURL = "https://script.google.com/macros/s/AKfycbzUpijkoMx9LcL1KaxJCcrDAy7ioR9fpY-JAQGL93ef8vuPYzkU2-SF_qnWvzUvnaBt/exec";
 
       var namaPemain = "Ninja"; var kelasPemain = "1A"; var karakterPilih = "ken"; 
-      var urutanLevel = ["Putih", "Kuning", "Hijau", "Biru", "Coklat", "Hitam"];
+      var urutanLevel = ["Putih", "Kuning", "Hijau", "Biru", "Coklat", "Hitam", "Post-Test"];
       var indeksLevelSekarang = 0; var levelSekarang = urutanLevel[indeksLevelSekarang]; 
       var indeksSoalSekarang = 0; var inputAngka = "";
       
@@ -668,7 +668,7 @@ function mulaiTimerGlobal() {
   feedback.style.display = 'block';
 
   // 4. Logika Sabuk untuk Reset Karakter
-  var urutanS = ["Putih", "Kuning", "Hijau", "Biru", "Coklat", "Hitam"];
+  var urutanS = ["Putih", "Kuning", "Hijau", "Biru", "Coklat", "Hitam", "Post-Test"];
   var indeksS = urutanS.indexOf(levelSekarang);
  // Sabuk yang sedang dipakai (satu tingkat di bawah ujian)
 var sabukAktif = (indeksS > 0) ? urutanS[indeksS - 1] : "Putih";
@@ -725,6 +725,8 @@ var imgKarakter = document.getElementById('karakter-pemain');
             sabukVisual = "Hijau"; // Contoh: Ujian Coklat, diam pakai Hijau (silakan sesuaikan)
         } else if (levelSekarang === "Hitam") {
             sabukVisual = "Coklat";
+        } else if (levelSekarang === "Post-Test") {
+            sabukVisual = "Hitam";
         }
 
         // Simpan ke variabel global agar bisa dipakai saat menebas nanti
@@ -814,7 +816,18 @@ var imgKarakter = document.getElementById('karakter-pemain');
       judulLulus.style.marginTop = "50px";
       judulLulus.style.fontSize = "1.2rem";
     }
-
+// Cek apakah masih ada level berikutnya?
+    if (idxLevel < urutanLevel.length - 1) {
+      levelSekarang = urutanLevel[idxLevel + 1]; // Naik dari Coklat ke Hitam, lalu ke Post-Test
+      indeksSoalSekarang = 0;
+      alert("Hebat! Kamu naik ke level: " + levelSekarang);
+      muatSoal(); // Jalankan level baru
+    } else {
+      // Jika sudah selesai Post-Test, baru jalankan simpanSkor
+      simpanSkor(); 
+    }
+    return;
+  }
     // Tampilkan Skor & Leaderboard
     document.getElementById('skor-akhir').innerText = "Skor: " + skorSaatIni;
     document.getElementById('area-selesai').style.display = 'flex';
@@ -949,19 +962,23 @@ var imgKarakter = document.getElementById('karakter-pemain');
     var imgKarakter = document.getElementById('karakter-pemain');
     
     if (imgKarakter && asetKarakter[karakterPilih]) {
-        // 1. Tentukan sabuk yang MENEBAS (Logika IF sesuai permintaan Ibu)
-        let sabukTebas = "Putih"; 
-        if (levelSekarang === "Kuning") {
-            sabukTebas = "Putih"; 
-        } else if (levelSekarang === "Hijau") {
-            sabukTebas = "Kuning"; 
-        } else if (levelSekarang === "Biru") {
-            sabukTebas = "Hijau";  
-        } else if (levelSekarang === "Coklat") {
-            sabukTebas = "Biru";   
-        } else if (levelSekarang === "Hitam") {
-            sabukTebas = "Coklat"; 
-        }
+        // 1. Tentukan sabuk yang MENEBAS (Logika IF sesuai permintaan Ibu)     
+      // --- REVISI LOGIKA SABUK TEBAS ---
+let sabukTebas = "Putih"; 
+if (levelSekarang === "Kuning") {
+    sabukTebas = "Putih"; 
+} else if (levelSekarang === "Hijau") {
+    sabukTebas = "Kuning"; 
+} else if (levelSekarang === "Biru") {
+    sabukTebas = "Hijau";  
+} else if (levelSekarang === "Coklat") {
+    sabukTebas = "Biru";   
+} else if (levelSekarang === "Hitam") {
+    sabukTebas = "Coklat"; 
+} else if (levelSekarang === "Post-Test") {
+    sabukTebas = "Hitam"; // Saat Post-Test, karakter pakai visual Sabuk Hitam
+}
+      
 
         // 2. EKSEKUSI TEBAS (Kita beri waktu 1.2 detik agar gerakan terlihat)
         imgKarakter.src = asetKarakter[karakterPilih][sabukTebas]["tebas"];
@@ -1032,6 +1049,7 @@ var imgKarakter = document.getElementById('karakter-pemain');
   </body>
 
 </html>
+
 
 
 
