@@ -834,9 +834,17 @@ var imgKarakter = document.getElementById('karakter-pemain');
   }
 }
       
- // PASTIKAN IBU SUDAH PUNYA VARIABEL scriptURL DI ATAS (Link Google Script /exec)
-// var scriptURL = "https://script.google.com/macros/s/KODE_IBU/exec";
+ function muatLeaderboard() {
+  // Link ini harus link /exec Ibu yang terbaru
+  const scriptURL = "https://script.google.com/macros/s/AKfycbzUpijkoMx9LcL1KaxJCcrDAy7ioR9fpY-JAQGL93ef8vuPYzkU2-SF_qnWvzUvnaBt/exec"; 
 
+  fetch(scriptURL + "?action=getLeaderboard")
+    .then(response => response.json())
+    .then(data => {
+      tampilkanLeaderboard(data); // Memanggil fungsi render tabel yang sudah Ibu punya
+    })
+    .catch(err => console.error("Gagal muat leaderboard:", err));
+}
 function muatLeaderboard() {
   console.log("Mencoba mengambil data dari Google Sheets...");
   
@@ -844,20 +852,7 @@ function muatLeaderboard() {
   var isiLB = document.getElementById('isi-lb');
   if(isiLB) isiLB.innerHTML = "<tr><td colspan='4'>Memanggil Para Ninja...</td></tr>";
 
-  // Kita gunakan fetch agar bisa jalan di GitHub
-  fetch(scriptURL + "?action=getLeaderboard")
-    .then(response => response.json())
-    .then(data => {
-      console.log("Data diterima dari Server:", data);
-      tampilkanLeaderboard(data); // Panggil fungsi render yang Ibu punya
-    })
-    .catch(error => {
-      console.error("Gagal ambil data:", error);
-      if(isiLB) isiLB.innerHTML = "<tr><td colspan='4'>Gagal koneksi ke Dojang.</td></tr>";
-    });
-}
-
-function tampilkanLeaderboard(data) {
+  function tampilkanLeaderboard(data) {
   var isiLB = document.getElementById('isi-lb');
   var wadahLB = document.getElementById('tampil-leaderboard');
   
@@ -1040,6 +1035,7 @@ function tampilkanLeaderboard(data) {
   </body>
 
 </html>
+
 
 
 
