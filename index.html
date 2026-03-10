@@ -393,6 +393,9 @@
     </div>
 
     <script>
+     
+  const scriptURL = "https://script.google.com/macros/s/AKfycbzUpijkoMx9LcL1KaxJCcrDAy7ioR9fpY-JAQGL93ef8vuPYzkU2-SF_qnWvzUvnaBt/exec"; 
+
       var namaPemain = "Ninja"; var kelasPemain = "1A"; var karakterPilih = "ken"; 
       var urutanLevel = ["Putih", "Kuning", "Hijau", "Biru", "Coklat", "Hitam"];
       var indeksLevelSekarang = 0; var levelSekarang = urutanLevel[indeksLevelSekarang]; 
@@ -551,7 +554,8 @@ function mulaiTimerGlobal() {
   // Pastikan level awal adalah Putih
   levelSekarang = "Putih";
   indeksLevelSekarang = 0;
-  
+  const scriptURL = "https://script.google.com/macros/s/AKfycbzUpijkoMx9LcL1KaxJCcrDAy7ioR9fpY-JAQGL93ef8vuPYzkU2-SF_qnWvzUvnaBt/exec"; 
+
   // Ambil data soal dari penyimpanan lokal (yang sudah diambil saat window.onload)
   dataSoalAktif = dataSemuaSoal[levelSekarang];
 
@@ -825,12 +829,6 @@ var imgKarakter = document.getElementById('karakter-pemain');
        elemenJudulSelesai.innerHTML = "TAMAT!<br>MASTER NINJA!";
        document.getElementById('btn-lanjut-level').style.display = "none"; 
     }
-
-    // Kirim Data
-    if (google.script.run) {
-      google.script.run.withSuccessHandler(tampilkanLeaderboard).ambilLeaderboard();
-      google.script.run.simpanKeSheet(namaPemain, kelasPemain, skorSaatIni, totalDetikBermain, levelSekarang);
-    }
   }
 }
       
@@ -1035,6 +1033,7 @@ function muatLeaderboard() {
   </body>
 
 </html>
+
 
 
 
