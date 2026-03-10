@@ -759,7 +759,7 @@ var imgKarakter = document.getElementById('karakter-pemain');
       document.getElementById('teks-jawaban').innerText = "";
     }
 
-    var urutanS = ["Putih", "Kuning", "Hijau", "Biru", "Coklat", "Hitam"];
+    var urutanS = ["Putih", "Kuning", "Hijau", "Biru", "Coklat", "Hitam", "Post-Test"];
     var indeksS = urutanS.indexOf(levelSekarang); 
     
     // Sabuk yang dimiliki siswa saat ini (satu tingkat di bawah target)
@@ -839,7 +839,7 @@ var imgKarakter = document.getElementById('karakter-pemain');
        document.getElementById('btn-lanjut-level').innerText = "LANJUT ►";
        document.getElementById('btn-lanjut-level').style.display = "block";
     } else {
-       elemenJudulSelesai.innerHTML = "TAMAT!<br>MASTER NINJA!";
+       elemenJudulSelesai.innerHTML = "TAMAT!<br>KAMU ADALAH MASTER NINJA!";
        document.getElementById('btn-lanjut-level').style.display = "none"; 
     }
   }
@@ -924,7 +924,7 @@ var imgKarakter = document.getElementById('karakter-pemain');
         
         console.log("Berhasil pindah ke Sabuk: " + levelSekarang);
     } else {
-        alert("Selamat Master Ninja! Semua sabuk telah diselesaikan.");
+        alert("Selamat Master Ninja! Semua ujian sabuk telah diselesaikan.");
         kembaliKeAwal();
     }
 }
@@ -1049,6 +1049,7 @@ if (levelSekarang === "Kuning") {
   </body>
 
 </html>
+
 
 
 
