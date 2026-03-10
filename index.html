@@ -7,9 +7,18 @@
     
    <style>
       /* --- Gaya Dasar --- */
-      body { margin: 0; padding-bottom: 100px; background-color: #000; font-family: 'Comic Sans MS', sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; color: white; }
-      #game-container { width: 100%; max-width: 400px; height: 100%; max-height: 800px; background-color: #1a1a1a; position: relative; overflow: hidden; box-shadow: 0 0 20px rgba(0,0,0,0.8); }
-      .layar { width: 100%; height: 100%; position: absolute; top: 0; left: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; background-size: cover; background-position: center; }
+      body { margin: 0; padding: 0; background-color: #000; font-family: 'Comic Sans MS', sans-serif; display: block; justify-content: center; align-items: center; height: auto; overflow: auto; color: white; }
+      #game-container { 
+  width: 100%; 
+  max-width: 400px; 
+  min-height: 100vh; /* Gunakan min-height bukan height tetap */
+  margin: 0 auto; /* Tengah-tengah layar */
+  background-color: #1a1a1a; 
+  position: relative; 
+  overflow: visible; /* Izinkan elemen di dalamnya 'napas' keluar */
+  box-shadow: 0 0 20px rgba(0,0,0,0.8); 
+  padding-bottom: 120px; /* Ruang ekstra besar di bawah agar tombol tidak tertutup footer */
+}      .layar { width: 100%; height: 100%; position: absolute; top: 0; left: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; background-size: cover; background-position: center; }
       #layar-judul { background-image: url('https://drive.google.com/thumbnail?id=1-UYPyRH8oqdFND2QS9Xns4-1LH067xiX&sz=w800'); }
       #layar-cerita { background-size: contain; background-repeat: no-repeat; background-position: center; background-color: #000; cursor: pointer; }
       #layar-gameplay { background-image: url('https://drive.google.com/thumbnail?id=1LqU_cpFfFmx4N2f2cCKycL12aDkKKcN0&sz=w800'); justify-content: flex-start; padding-top: 5px; padding-bottom: 40px; }
@@ -105,7 +114,7 @@
 #karakter-pemain {
   height: 20vh; /* Menggunakan vh agar menyesuaikan tinggi layar IFP/Laptop */
   width: auto;
-  position: fixed;
+  position: relative;
   bottom: 220px; /* Turun dari sebelumnya agar pas di HP & Laptop */
   left: 50%;
   transform: translateX(-50%);
@@ -120,11 +129,12 @@
   /* UKURAN DAN POSISI */
   width: 75%;
   max-width: 240px;
+  margin: 20px auto;
   box-shadow: 0 8px 15px rgba(0,0,0,0.8);
   z-index: 1000;
   
   /* AGAR MENGAPUNG DI ATAS FOOTER UNGU */
-  position: fixed;
+  position: relative;
   bottom: 80px; 
   left: 50%;
   transform: translateX(-50%);
@@ -265,7 +275,7 @@
 }
 /* Footer Sekolah tetap di bawah */
 .footer-sekolah { 
-  position: fixed; 
+  position: relative; 
   bottom: 0; 
   left: 0; 
   width: 100%; 
@@ -1001,5 +1011,6 @@ var imgKarakter = document.getElementById('karakter-pemain');
   </body>
 
 </html>
+
 
 
