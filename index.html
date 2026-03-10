@@ -125,27 +125,27 @@
       .area-karakter { flex-grow: 1; display: flex; align-items: flex-end; justify-content: center; width: 100%; z-index: 5; padding-bottom: 10px;}
       /* Pastikan karakter punya ukuran dan posisi */
 #karakter-pemain {
-  height: 180px; /* Ukuran pas untuk HP */
+  height: 160px; /* Ukuran disesuaikan agar tidak makan tempat */
   width: auto;
-  position: absolute; 
-  top: 60%; /* Diturunkan agar di bawah gulungan soal */
+  position: absolute;
+  /* Kunci di tengah bawah */
+  bottom: 180px; /* Jarak dari bawah layar, silakan naik/turunkan angka ini */
   left: 50%;
-  transform: translateX(-50%);
+  transform: translateX(-50%) !important; /* Paksa ke tengah */
   z-index: 100;
-  transition: transform 0.2s ease-in-out;
+  display: block;
 }
 
 #papan-kontrol-css {
-  display: grid !important; 
-  grid-template-columns: repeat(3, 1fr) !important; 
-  gap: 8px;
-  width: 90%;
-  max-width: 300px;
-  position: relative; /* Bukan fixed */
-  margin: 20px auto; 
-  bottom: 0;
-  left: 0;
-  transform: none;
+  display: grid !important;
+  grid-template-columns: repeat(3, 1fr) !important;
+  gap: 5px;
+  width: 260px;
+  position: absolute;
+  bottom: 60px; /* Pas di atas footer */
+  left: 50%;
+  transform: translateX(-50%) !important;
+  z-index: 1000;
 }
 .tombol-angka {
   padding: 5px 0 !important; /* Tombol dibuat lebih tipis */
@@ -283,18 +283,17 @@
 }
 /* Footer Sekolah tetap di bawah */
 .footer-sekolah { 
-  position: relative; 
-  bottom: 0; 
-  left: 0; 
-  width: 100%; 
-  background-color: #8e44ad; 
-  color: white; 
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: #8e44ad;
+  color: white;
   text-align: center;
-  margin-top: 30px;
-  padding: 15px 0; 
-  font-size: 14px; 
+  padding: 10px 0;
+  font-size: 12px;
   font-weight: bold; 
-  z-index: 110; 
+  z-index: 2000; 
 }
     </style>
   </head>
@@ -1020,6 +1019,7 @@ var imgKarakter = document.getElementById('karakter-pemain');
   </body>
 
 </html>
+
 
 
 
