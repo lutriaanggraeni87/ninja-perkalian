@@ -56,7 +56,20 @@
         z-index: 20; 
       }
       #ikon-sabuk-ui { height: 35px; width: auto; object-fit: contain; } /* Ukuran Sabuk Lebih Besar */
-      
+      #wadah-ikon-sabuk {
+  position: absolute;
+  top: 10px; /* Kita paksa ke atas layar */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  height: 40px;
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000; /* Angka besar supaya tidak tertutup apapun */
+}
       #teks-ujian { 
         font-size: 20px; 
         color: #f1c40f; 
@@ -112,13 +125,14 @@
       .area-karakter { flex-grow: 1; display: flex; align-items: flex-end; justify-content: center; width: 100%; z-index: 5; padding-bottom: 10px;}
       /* Pastikan karakter punya ukuran dan posisi */
 #karakter-pemain {
-  height: 20vh; /* Menggunakan vh agar menyesuaikan tinggi layar IFP/Laptop */
+  height: 180px; /* Ukuran pas untuk HP */
   width: auto;
-  position: relative;
-  bottom: 220px; /* Turun dari sebelumnya agar pas di HP & Laptop */
+  position: absolute; 
+  top: 60%; /* Diturunkan agar di bawah gulungan soal */
   left: 50%;
   transform: translateX(-50%);
-  z-index: 5;
+  z-index: 100;
+  transition: transform 0.2s ease-in-out;
 }
 
 #papan-kontrol-css {
@@ -1006,6 +1020,7 @@ var imgKarakter = document.getElementById('karakter-pemain');
   </body>
 
 </html>
+
 
 
 
