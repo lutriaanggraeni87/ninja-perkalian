@@ -691,7 +691,7 @@ var imgKarakter = document.getElementById('karakter-pemain');
       function muatSoal() {
   // 1. Ambil data soal
   var d = dataSemuaSoal[levelSekarang];
-  if (!d) return;
+  if (!dSoal) return;
 // 2. CEK JIKA SOAL HABIS (LULUS)
   if (indeksSoalSekarang >= d.length) {
     if (typeof tampilkanLayarLulus === "function") {
@@ -958,6 +958,7 @@ var imgKarakter = document.getElementById('karakter-pemain');
   </body>
 
 </html>
+
 
 
 
