@@ -774,12 +774,16 @@ function muatSoal() {
   }
 }
       function tampilkanLayarLulus() {
-  // Simpan skor
+  // 1. Simpan skor dulu
   if (typeof simpanSkor === "function") simpanSkor();
 
-  // Matikan gameplay, munculkan area selesai
+  // 2. TUKAR LAYAR (Ini bagian yang sering bikin blank)
   document.getElementById('layar-gameplay').style.display = 'none';
-  document.getElementById('area-selesai').style.display = 'flex';
+  var layarSelesai = document.getElementById('area-selesai');
+  if (layarSelesai) {
+      layarSelesai.style.display = 'flex'; // Paksa tampil
+      layarSelesai.style.opacity = '1';
+  }
 
   var judul = document.getElementById('judul-selesai');
   var btn = document.getElementById('btn-lanjut-level');
@@ -787,24 +791,26 @@ function muatSoal() {
   var idx = urutan.indexOf(levelSekarang);
 
   if (idx < urutan.length - 1) {
-    var levelBerikutnya = urutan[idx + 1];
+    // Masih ada level berikutnya (Ke Kuning, dst)
+    var levelNext = urutan[idx + 1];
     judul.innerHTML = "LUAR BIASA!<br>LULUS UJIAN SABUK " + levelSekarang.toUpperCase();
     
     if (btn) {
       btn.style.display = "block";
-      btn.innerText = "LANJUT KE " + levelBerikutnya.toUpperCase() + " ►";
+      btn.innerText = "LANJUT KE " + levelNext.toUpperCase() + " ►";
       btn.onclick = function() {
-        levelSekarang = levelBerikutnya;
+        levelSekarang = levelNext;
         indeksSoalSekarang = 0;
-        muatSoal(); 
+        muatSoal(); // Mulai soal sabuk baru
       };
     }
   } else {
+    // Selesai Post-Test
     judul.innerHTML = "MASTER NINJA!<br>SEMUA TINGKATAN SELESAI";
     if (btn) btn.style.display = "none";
   }
 
-  // Panggil Leaderboard
+  // 3. PANGGIL LEADERBOARD (Wajib ditaruh terakhir)
   if (typeof muatLeaderboard === "function") {
     muatLeaderboard();
   }
@@ -992,6 +998,7 @@ if (levelSekarang === "Kuning") {
   </body>
 
 </html>
+
 
 
 
