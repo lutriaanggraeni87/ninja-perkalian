@@ -706,6 +706,13 @@ function kembaliKeAwal() {
 }
 
 function muatSoal() {
+  var dSoal = dataSemuaSoal[levelSekarang];
+  if (indeksSoalSekarang >= dSoal.length) {
+    document.getElementById('layar-gameplay').style.display = 'none'; // Sembunyikan game
+    document.getElementById('area-selesai').style.display = 'flex';   // Munculkan layar lulus
+    if (typeof muatLeaderboard === 'function') muatLeaderboard();    // Munculkan peringkat
+    return; // Berhenti agar tidak blank
+  }
   // 1. Ambil data soal level sekarang
   var dataSoalLevelIni = dataSemuaSoal[levelSekarang];
   if (!dataSoalLevelIni) {
@@ -991,6 +998,7 @@ if (levelSekarang === "Kuning") {
   </body>
 
 </html>
+
 
 
 
