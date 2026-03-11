@@ -392,7 +392,15 @@
     </div>
 
     <script>
-     
+     function sembunyikanKeypad(){
+  var k = document.getElementById('papan-kontrol-css');
+  if(k) k.style.display = "none";
+}
+
+function tampilkanKeypad(){
+  var k = document.getElementById('papan-kontrol-css');
+  if(k) k.style.display = "grid";
+}
   const scriptURL = "https://script.google.com/macros/s/AKfycbzUpijkoMx9LcL1KaxJCcrDAy7ioR9fpY-JAQGL93ef8vuPYzkU2-SF_qnWvzUvnaBt/exec";
 
       var namaPemain = "Ninja"; var kelasPemain = "1A"; var karakterPilih = "ken"; 
@@ -708,7 +716,7 @@ var imgKarakter = document.getElementById('karakter-pemain');
 
     // Hapus elemen yang tidak perlu di layar lulus
     if (document.getElementById('wadah-timer')) document.getElementById('wadah-timer').style.display = 'none';
-    if (document.getElementById('papan-kontrol-css')) document.getElementById('papan-kontrol-css').style.display = 'none';
+    if (document.getElementById('papan-kontrol-css')) sembunyikanKeypad();
 
     var elemenJudulSelesai = document.getElementById('judul-selesai');
     var btnLanjut = document.getElementById('btn-lanjut-level');
@@ -752,7 +760,7 @@ var imgKarakter = document.getElementById('karakter-pemain');
   // Pastikan elemen gameplay muncul semua
   document.getElementById('layar-gameplay').style.display = 'block';
   document.getElementById('area-selesai').style.display = 'none';
-  document.getElementById('papan-kontrol-css').style.display = 'grid';
+  sembunyikanKeypad();
   document.getElementById('area-soal').style.display = 'flex';
   document.getElementById('wadah-timer').style.display = 'block';
   document.getElementById('teks-ujian').style.display = 'block';
@@ -896,7 +904,7 @@ if(keypad) keypad.style.display = "none";
         document.getElementById('area-selesai').style.display = 'none';
         
         // 5. Tampilkan kembali elemen game yang mungkin tadi disembunyikan
-        document.getElementById('papan-kontrol-css').style.display = 'grid';
+        sembunyikanKeypad();
         document.getElementById('area-soal').style.display = 'flex';
         document.getElementById('wadah-timer').style.display = 'block';
 
@@ -1030,6 +1038,7 @@ if (levelSekarang === "Kuning") {
   </body>
 
 </html>
+
 
 
 
