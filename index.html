@@ -838,16 +838,6 @@ var imgKarakter = document.getElementById('karakter-pemain');
 let skor = 0;
 let levelSekarang = 0;
 
-// TARUH DI SINI
-function sembunyikanKeypad(){
-  var k = document.getElementById('papan-kontrol-css');
-  if(k) k.style.display = "none";
-}
-
-function tampilkanKeypad(){
-  var k = document.getElementById('papan-kontrol-css');
-  if(k) k.style.display = "grid";
-}
   function tampilkanLeaderboard(data) {
   var isiLB = document.getElementById('isi-lb');
   var wadahLB = document.getElementById('tampil-leaderboard');
@@ -1038,6 +1028,7 @@ if (levelSekarang === "Kuning") {
   </body>
 
 </html>
+
 
 
 
