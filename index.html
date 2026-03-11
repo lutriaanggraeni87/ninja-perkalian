@@ -693,17 +693,34 @@ var imgKarakter = document.getElementById('karakter-pemain');
   var d = dataSemuaSoal[levelSekarang];
   if (!d) return;
 
-  // 2. CEK JIKA SOAL HABIS (LULUS)
-  if (indeksSoalSekarang >= d.length) {
-    if (typeof tampilkanLayarLulus === "function") {
-        tampilkanLayarLulus();
-    } else {
-        // Jika fungsi lulus belum ada, paksa munculkan area selesai
-        document.getElementById('layar-gameplay').style.display = 'none';
-        document.getElementById('area-selesai').style.display = 'flex';
-        if (typeof muatLeaderboard === "function") muatLeaderboard();
+  // --- LOGIKA JIKA SOAL HABIS (LULUS SABUK) ---
+  if (indeksSoalSekarang >= dSoal.length) {
+    // 1. Simpan skor
+    if (typeof simpanSkor === "function") simpanSkor();
+
+    // 2. MATIKAN SEMUA LAYAR GAME (PENTING!)
+    document.getElementById('layar-gameplay').style.display = 'none';
+    document.getElementById('wadah-timer').style.display = 'none';
+    
+    // 3. MUNCULKAN LAYAR SELESAI & LEADERBOARD
+    var layarSelesai = document.getElementById('area-selesai');
+    if (layarSelesai) {
+        layarSelesai.style.display = 'flex';
+        layarSelesai.style.flexDirection = 'column';
     }
-    return;
+
+    // 4. Update Tulisan Lulus
+    var judulSelesai = document.getElementById('judul-selesai');
+    if (judulSelesai) {
+        judulSelesai.innerHTML = "SELAMAT!<br>LULUS SABUK " + levelSekarang.toUpperCase();
+    }
+
+    // 5. PANGGIL LEADERBOARD (Kunci agar tidak blank)
+    if (typeof muatLeaderboard === "function") {
+        muatLeaderboard();
+    }
+    
+    return; // Berhenti di sini agar tidak memproses kode di bawahnya
   }
 
   // 3. TAMPILKAN SOAL DULU (Agar tidak telat)
@@ -892,7 +909,7 @@ var imgKarakter = document.getElementById('karakter-pemain');
       imgKarakter.src = asetKarakter[karakterPilih][sabukTebas]["tebas"] || asetKarakter[karakterPilih][sabukTebas]["tebas"];
       
       // PERBAIKAN POSISI: Naikkan 'bottom' dan perbesar 'scale'
-      imgKarakter.style.bottom = "130px"; // Memaksa karakter naik saat menebas
+      imgKarakter.style.bottom = "300px"; // Memaksa karakter naik saat menebas
       imgKarakter.style.transform = "translateX(-50%) scale(1.3)"; 
       imgKarakter.style.transition = "all 0.2s ease"; // Biar gerakannya mulus
 
@@ -958,6 +975,7 @@ var imgKarakter = document.getElementById('karakter-pemain');
   </body>
 
 </html>
+
 
 
 
