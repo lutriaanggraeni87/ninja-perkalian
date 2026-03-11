@@ -706,109 +706,97 @@ function kembaliKeAwal() {
 }
 
 function muatSoal() {
-  // 1. Pastikan data soal ada
-  var dSoal = dataSemuaSoal[levelSekarang];
-  if (!dSoal) return;
+  var d = dataSemuaSoal[levelSekarang];
+  if (!d) return;
 
-  // --- LOGIKA A: JIKA SOAL HABIS (LULUS SABUK) ---
-  if (indeksSoalSekarang >= dSoal.length) {
-    // Simpan skor otomatis ke Sheet
-    if (typeof simpanSkor === "function") simpanSkor();
-
-    // Gunakan satu nama variabel urutan yang pasti
-    var daftarLevel = ["Putih", "Kuning", "Hijau", "Biru", "Coklat", "Hitam", "Post-Test"];
-    var posisiSekarang = daftarLevel.indexOf(levelSekarang);
-
-    // TUKAR LAYAR (Ini kunci agar tidak blank)
-    document.getElementById('layar-gameplay').style.display = 'none';
-    document.getElementById('area-selesai').style.display = 'flex';
-
-    var teksJudul = document.getElementById('judul-selesai');
-    var tombolLanjut = document.getElementById('btn-lanjut-level');
-
-    if (posisiSekarang < daftarLevel.length - 1) {
-      // MASIH ADA LEVEL (Bisa lanjut ke Kuning, dst sampai Post-Test)
-      var levelNext = daftarLevel[posisiSekarang + 1];
-      teksJudul.innerHTML = "LUAR BIASA!<br>LULUS UJIAN SABUK " + levelSekarang.toUpperCase();
-      
-      if (tombolLanjut) {
-        tombolLanjut.style.display = "block";
-        tombolLanjut.innerText = "LANJUT KE " + levelNext.toUpperCase() + " ►";
-        tombolLanjut.onclick = function() {
-          levelSekarang = levelNext;
-          indeksSoalSekarang = 0;
-          muatSoal(); // Mulai soal sabuk baru
-        };
-      }
-    } else {
-      // TAMAT SEMUA (Post-Test Selesai)
-      teksJudul.innerHTML = "MASTER NINJA!<br>SEMUA TINGKATAN SELESAI";
-      if (tombolLanjut) tombolLanjut.style.display = "none";
-    }
-
-    // PANGGIL LEADERBOARD (Agar muncul di bawah tulisan Lulus)
-    if (typeof muatLeaderboard === "function") {
-      muatLeaderboard();
-    }
-    
-    return; // STOP DI SINI agar tidak blank hitam
+  // JIKA SOAL HABIS -> PANGGIL FUNGSI KHUSUS LULUS
+  if (indeksSoalSekarang >= d.length) {
+    prosesLulusSabuk();
+    return; 
   }
 
-  // --- LOGIKA B: JALANNYA GAME (SOAL MASIH ADA) ---
+  // JALANNYA GAME
   statusSoalAktif = true;
-  var sAktif = dSoal[indeksSoalSekarang];
+  var soal = d[indeksSoalSekarang];
 
-  // Munculkan layar game, sembunyikan layar lain
-  document.getElementById('layar-judul').style.display = 'none';
+  // Pastikan layar gameplay muncul
   document.getElementById('layar-gameplay').style.display = 'block';
   document.getElementById('area-selesai').style.display = 'none';
   document.getElementById('papan-kontrol-css').style.display = 'grid';
   document.getElementById('area-soal').style.display = 'flex';
 
-  // Tampilkan Pertanyaan & Tanda ?
-  var tPertanyaan = document.getElementById('teks-pertanyaan');
-  if(tPertanyaan) tPertanyaan.innerText = (sAktif.pertanyaan || "").replace(/x/g, " x ");
-  
+  // Tampilkan Soal & ?
+  document.getElementById('teks-pertanyaan').innerText = soal.pertanyaan.replace(/x/g, " x ");
   inputAngka = ""; 
-  var tJawaban = document.getElementById('teks-jawaban');
-  if(tJawaban) tJawaban.innerText = "?";
+  document.getElementById('teks-jawaban').innerText = "?";
 
-  // Atur Visual Sabuk (Request Ibu)
-  var urutanV = ["Putih", "Kuning", "Hijau", "Biru", "Coklat", "Hitam", "Post-Test"];
-  var idxV = urutanV.indexOf(levelSekarang);
-  var sVisual = (idxV > 0) ? urutanV[idxV - 1] : "Putih";
+  // Atur Visual Karakter
+  var urutanS = ["Putih", "Kuning", "Hijau", "Biru", "Coklat", "Hitam", "Post-Test"];
+  var iS = urutanS.indexOf(levelSekarang);
+  var sV = (iS > 0) ? urutanS[iS - 1] : "Putih";
+  if (levelSekarang === "Hijau" || levelSekarang === "Biru") sV = "Putih";
+  else if (levelSekarang === "Coklat") sV = "Hijau";
+  else if (levelSekarang === "Hitam") sV = "Coklat";
+  else if (levelSekarang === "Post-Test") sV = "Hitam";
 
-  if (levelSekarang === "Hijau" || levelSekarang === "Biru") sVisual = "Putih";
-  else if (levelSekarang === "Coklat") sVisual = "Hijau";
-  else if (levelSekarang === "Hitam") sVisual = "Coklat";
-  else if (levelSekarang === "Post-Test") sVisual = "Hitam";
-
-  // Update Gambar Ninja
-  var imgN = document.getElementById('karakter-pemain');
-  if (imgN && asetKarakter[karakterPilih]) {
-      imgN.style.display = "block";
-      imgN.src = asetKarakter[karakterPilih][sVisual]["diam"];
+  var img = document.getElementById('karakter-pemain');
+  if (img && asetKarakter[karakterPilih]) {
+      img.style.display = "block";
+      img.src = asetKarakter[karakterPilih][sV]["diam"];
   }
 
-  // Update Ikon Sabuk Atas
-  var ikonS = document.getElementById('ikon-sabuk-ui');
-  if(ikonS) {
-    ikonS.style.display = "block";
-    ikonS.src = asetSabuk[sVisual];
-  }
-  
-  if(document.getElementById('tampil-sabuk')) {
-    document.getElementById('tampil-sabuk').innerText = "Sabuk " + sVisual;
-  }
-
-  // Reset Animasi Gulungan
-  var areaS = document.getElementById('area-soal');
-  if(areaS) {
-    areaS.classList.remove('animasi-tertebas', 'animasi-jatuh');
-    areaS.style.transform = "scaleX(1)";
+  if(document.getElementById('ikon-sabuk-ui')) {
+    document.getElementById('ikon-sabuk-ui').style.display = "block";
+    document.getElementById('ikon-sabuk-ui').src = asetSabuk[sV];
   }
 
   if (typeof jalankanTimer === "function") jalankanTimer();
+}
+      function prosesLulusSabuk() {
+  // 1. Simpan Skor
+  if (typeof simpanSkor === "function") simpanSkor();
+
+  // 2. Sembunyikan Game, Munculkan Layar Selesai
+  document.getElementById('layar-gameplay').style.display = 'none';
+  var layarSelesai = document.getElementById('area-selesai');
+  layarSelesai.style.display = 'flex';
+  layarSelesai.style.flexDirection = 'column';
+  layarSelesai.style.alignItems = 'center';
+
+  var judul = document.getElementById('judul-selesai');
+  var btn = document.getElementById('btn-lanjut-level');
+
+  var urutan = ["Putih", "Kuning", "Hijau", "Biru", "Coklat", "Hitam", "Post-Test"];
+  var idx = urutan.indexOf(levelSekarang);
+
+  if (idx < urutan.length - 1) {
+    // KONDISI LANJUT (Kuning, Hijau, dst sampai Post-Test)
+    var levelNext = urutan[idx + 1];
+    judul.innerHTML = "LUAR BIASA!<br>LULUS UJIAN " + levelSekarang.toUpperCase();
+    
+    if (btn) {
+      btn.style.display = "block";
+      btn.innerText = "LANJUT KE " + levelNext.toUpperCase() + " ►";
+      btn.onclick = function() {
+        levelSekarang = levelNext;
+        indeksSoalSekarang = 0;
+        muatSoal(); 
+      };
+    }
+  } else {
+    // KONDISI TAMAT
+    judul.innerHTML = "MASTER NINJA!<br>SEMUA TINGKATAN SELESAI";
+    if (btn) btn.style.display = "none";
+  }
+
+  // 3. Tampilkan Skor & Leaderboard
+  if(document.getElementById('skor-akhir')) {
+    document.getElementById('skor-akhir').innerText = "Skor: " + skorSaatIni;
+  }
+  
+  if (typeof muatLeaderboard === "function") {
+    muatLeaderboard();
+  }
 }
        
  function muatLeaderboard() {
@@ -993,6 +981,7 @@ if (levelSekarang === "Kuning") {
   </body>
 
 </html>
+
 
 
 
