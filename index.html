@@ -366,8 +366,7 @@
         <button id="btn-lanjut-level" onclick="naikKeTingkatSelanjutnya()" style="background-color: #27ae60; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-family: 'Luckiest Guy';">LANJUT</button>
         <button onclick="kembaliKeAwal()" style="background-color: #e74c3c; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-family: 'Luckiest Guy';">SELESAI</button>
       </div>
-    </div> ```
-               
+    </div>               
           <div class="area-karakter"><img id="karakter-pemain" src="" alt="Karakter"></div>
 
           <div id="papan-kontrol-css">
@@ -679,7 +678,7 @@ var imgKarakter = document.getElementById('karakter-pemain');
     feedback.style.display = 'none';
     
     // Pastikan karakter kembali diam (idle) dan tidak dalam posisi tebas
-    imgKarakter.src = asetKarakter[karakterPilih][sabukDipakai]["diam"];
+    imgKarakter.src = asetKarakter[karakterPilih][sabukVisual]["diam"];
     imgKarakter.classList.remove('menebas-aktif', 'animasi-tebas');
     
     // Pindah ke soal berikutnya
@@ -705,8 +704,7 @@ var imgKarakter = document.getElementById('karakter-pemain');
     let idxLevel = urutanLevel.indexOf(levelSekarang);
 
     // Sembunyikan gameplay, munculkan LAYAR LULUS (Desain Padding Ibu)
-    document.getElementById('layar-gameplay').style.display = 'none';
-    document.getElementById('area-selesai').style.display = 'flex';
+        document.getElementById('area-selesai').style.display = 'flex';
 
     // Hapus elemen yang tidak perlu di layar lulus
     if (document.getElementById('wadah-timer')) document.getElementById('wadah-timer').style.display = 'none';
@@ -1016,6 +1014,7 @@ if (levelSekarang === "Kuning") {
   </body>
 
 </html>
+
 
 
 
