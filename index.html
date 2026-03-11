@@ -706,31 +706,33 @@ function kembaliKeAwal() {
 }
 
 function muatSoal() {
-  var d = dataSemuaSoal[levelSekarang];
-  if (!d) return;
+  // 1. Ambil data soal
+  var dSoal = dataSemuaSoal[levelSekarang];
+  if (!dSoal) return;
 
-  // JIKA SOAL HABIS -> PANGGIL FUNGSI KHUSUS LULUS
-  if (indeksSoalSekarang >= d.length) {
-    prosesLulusSabuk();
-    return; 
+  // --- CEK APAKAH SOAL HABIS ---
+  if (indeksSoalSekarang >= dSoal.length) {
+    // Jika habis, langsung lari ke fungsi lulus
+    tampilkanLayarLulus();
+    return;
   }
 
-  // JALANNYA GAME
+  // --- JALANNYA GAME (SOAL MASIH ADA) ---
   statusSoalAktif = true;
-  var soal = d[indeksSoalSekarang];
+  var soal = dSoal[indeksSoalSekarang];
 
-  // Pastikan layar gameplay muncul
+  // Munculkan layar game
   document.getElementById('layar-gameplay').style.display = 'block';
   document.getElementById('area-selesai').style.display = 'none';
   document.getElementById('papan-kontrol-css').style.display = 'grid';
   document.getElementById('area-soal').style.display = 'flex';
 
-  // Tampilkan Soal & ?
+  // Tampilkan Soal & Tanda ?
   document.getElementById('teks-pertanyaan').innerText = soal.pertanyaan.replace(/x/g, " x ");
   inputAngka = ""; 
   document.getElementById('teks-jawaban').innerText = "?";
 
-  // Atur Visual Karakter
+  // Visual Sabuk (Logika request Ibu)
   var urutanS = ["Putih", "Kuning", "Hijau", "Biru", "Coklat", "Hitam", "Post-Test"];
   var iS = urutanS.indexOf(levelSekarang);
   var sV = (iS > 0) ? urutanS[iS - 1] : "Putih";
@@ -752,48 +754,40 @@ function muatSoal() {
 
   if (typeof jalankanTimer === "function") jalankanTimer();
 }
-      function prosesLulusSabuk() {
-  // 1. Simpan Skor
+      function tampilkanLayarLulus() {
+  // 1. Simpan skor
   if (typeof simpanSkor === "function") simpanSkor();
 
-  // 2. Sembunyikan Game, Munculkan Layar Selesai
+  // 2. Ganti Tampilan ke Layar Selesai
   document.getElementById('layar-gameplay').style.display = 'none';
-  var layarSelesai = document.getElementById('area-selesai');
-  layarSelesai.style.display = 'flex';
-  layarSelesai.style.flexDirection = 'column';
-  layarSelesai.style.alignItems = 'center';
+  document.getElementById('area-selesai').style.display = 'flex';
 
   var judul = document.getElementById('judul-selesai');
   var btn = document.getElementById('btn-lanjut-level');
-
   var urutan = ["Putih", "Kuning", "Hijau", "Biru", "Coklat", "Hitam", "Post-Test"];
   var idx = urutan.indexOf(levelSekarang);
 
   if (idx < urutan.length - 1) {
-    // KONDISI LANJUT (Kuning, Hijau, dst sampai Post-Test)
-    var levelNext = urutan[idx + 1];
-    judul.innerHTML = "LUAR BIASA!<br>LULUS UJIAN " + levelSekarang.toUpperCase();
+    // MASIH ADA LEVEL (Bisa lanjut ke Kuning... sampai Post-Test)
+    var levelBerikutnya = urutan[idx + 1];
+    judul.innerHTML = "LUAR BIASA!<br>LULUS UJIAN SABUK " + levelSekarang.toUpperCase();
     
     if (btn) {
       btn.style.display = "block";
-      btn.innerText = "LANJUT KE " + levelNext.toUpperCase() + " ►";
+      btn.innerText = "LANJUT KE " + levelBerikutnya.toUpperCase() + " ►";
       btn.onclick = function() {
-        levelSekarang = levelNext;
+        levelSekarang = levelBerikutnya;
         indeksSoalSekarang = 0;
         muatSoal(); 
       };
     }
   } else {
-    // KONDISI TAMAT
+    // SELESAI POST-TEST (TAMAT)
     judul.innerHTML = "MASTER NINJA!<br>SEMUA TINGKATAN SELESAI";
     if (btn) btn.style.display = "none";
   }
 
-  // 3. Tampilkan Skor & Leaderboard
-  if(document.getElementById('skor-akhir')) {
-    document.getElementById('skor-akhir').innerText = "Skor: " + skorSaatIni;
-  }
-  
+  // 3. Munculkan Leaderboard
   if (typeof muatLeaderboard === "function") {
     muatLeaderboard();
   }
@@ -981,6 +975,7 @@ if (levelSekarang === "Kuning") {
   </body>
 
 </html>
+
 
 
 
