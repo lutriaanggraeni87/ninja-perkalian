@@ -45,6 +45,7 @@
         top: 0; left: 0; 
         width: 90%; 
         margin-top: 10px; 
+        margin-bottom: 50px;
         background: rgba(0,0,0,0.85); 
         border: 2px solid #f1c40f; 
         padding: 8px 15px; 
@@ -708,10 +709,10 @@ function kembaliKeAwal() {
 function muatSoal() {
   var dSoal = dataSemuaSoal[levelSekarang];
   if (indeksSoalSekarang >= dSoal.length) {
-    document.getElementById('layar-gameplay').style.display = 'none'; // Sembunyikan game
-    document.getElementById('area-selesai').style.display = 'flex';   // Munculkan layar lulus
-    if (typeof muatLeaderboard === 'function') muatLeaderboard();    // Munculkan peringkat
-    return; // Berhenti agar tidak blank
+    document.getElementById('layar-gameplay').style.display = 'none';
+    document.getElementById('area-selesai').style.display = 'flex';
+    if (typeof muatLeaderboard === 'function') muatLeaderboard();
+    return; // Berhenti supaya tidak hitam
   }
   // 1. Ambil data soal level sekarang
   var dataSoalLevelIni = dataSemuaSoal[levelSekarang];
@@ -998,6 +999,7 @@ if (levelSekarang === "Kuning") {
   </body>
 
 </html>
+
 
 
 
