@@ -692,37 +692,18 @@ var imgKarakter = document.getElementById('karakter-pemain');
   // 1. Ambil data soal
   var d = dataSemuaSoal[levelSekarang];
   if (!d) return;
-
-  // --- LOGIKA JIKA SOAL HABIS (LULUS SABUK) ---
-  if (indeksSoalSekarang >= dSoal.length) {
-    // 1. Simpan skor
-    if (typeof simpanSkor === "function") simpanSkor();
-
-    // 2. MATIKAN SEMUA LAYAR GAME (PENTING!)
-    document.getElementById('layar-gameplay').style.display = 'none';
-    document.getElementById('wadah-timer').style.display = 'none';
-    
-    // 3. MUNCULKAN LAYAR SELESAI & LEADERBOARD
-    var layarSelesai = document.getElementById('area-selesai');
-    if (layarSelesai) {
-        layarSelesai.style.display = 'flex';
-        layarSelesai.style.flexDirection = 'column';
+// 2. CEK JIKA SOAL HABIS (LULUS)
+  if (indeksSoalSekarang >= d.length) {
+    if (typeof tampilkanLayarLulus === "function") {
+        tampilkanLayarLulus();
+    } else {
+        // Jika fungsi lulus belum ada, paksa munculkan area selesai
+        document.getElementById('layar-gameplay').style.display = 'none';
+        document.getElementById('area-selesai').style.display = 'flex';
+        if (typeof muatLeaderboard === "function") muatLeaderboard();
     }
-
-    // 4. Update Tulisan Lulus
-    var judulSelesai = document.getElementById('judul-selesai');
-    if (judulSelesai) {
-        judulSelesai.innerHTML = "SELAMAT!<br>LULUS SABUK " + levelSekarang.toUpperCase();
-    }
-
-    // 5. PANGGIL LEADERBOARD (Kunci agar tidak blank)
-    if (typeof muatLeaderboard === "function") {
-        muatLeaderboard();
-    }
-    
-    return; // Berhenti di sini agar tidak memproses kode di bawahnya
+    return;
   }
-
   // 3. TAMPILKAN SOAL DULU (Agar tidak telat)
   statusSoalAktif = true;
   var soal = d[indeksSoalSekarang];
@@ -905,22 +886,24 @@ var imgKarakter = document.getElementById('karakter-pemain');
       else if (levelSekarang === "Post-Test") sabukTebas = "Hitam";
 
       // 3. EKSEKUSI ANIMASI MENEBAS (NAIKKAN POSISI)
-      // Cek apakah pakai kata "tebas" atau "serang" di aset Ibu. Saya asumsikan "serang" agar lebih umum
-      imgKarakter.src = asetKarakter[karakterPilih][sabukTebas]["tebas"] || asetKarakter[karakterPilih][sabukTebas]["tebas"];
-      
-      // PERBAIKAN POSISI: Naikkan 'bottom' dan perbesar 'scale'
-      imgKarakter.style.bottom = "300px"; // Memaksa karakter naik saat menebas
-      imgKarakter.style.transform = "translateX(-50%) scale(1.3)"; 
+      let urutanS = ["Putih", "Kuning", "Hijau", "Biru", "Coklat", "Hitam", "Post-Test"];
+    let iS = urutanS.indexOf(levelSekarang);
+    let sabukTebas = (iS > 0) ? urutanS[iS - 1] : "Putih";
+
+    // Ganti ke gambar TEBAS
+    imgKarakter.src = asetKarakter[karakterPilih][sabukTebas]["tebas"];
+    // NAIKKAN POSISI & MAJU SEDIKIT (Pake bottom agar lebih naik)
+    imgKarakter.style.bottom = "200px"; 
+    imgKarakter.style.transform = "translateX(-50%) scale(1.2)";
       imgKarakter.style.transition = "all 0.2s ease"; // Biar gerakannya mulus
 
       // 4. ANIMASI GULUNGAN (WAJIB JATUH)
       var gulungan = document.getElementById('area-soal');
       if(gulungan) {
-          gulungan.classList.remove('animasi-tertebas');
-          void gulungan.offsetWidth; // Reset animasi agar bisa jalan lagi
-          gulungan.classList.add('animasi-tertebas');
-      }
-
+      gulungan.classList.remove('animasi-tertebas', 'animasi-jatuh');
+      void gulungan.offsetWidth; // Reset animasi
+      gulungan.classList.add('animasi-tertebas'); // Tambahkan class CSS tebas
+    }          
       // 5. SUARA
       var sfxTring = document.getElementById('sfx-tring');
       if (sfxTring) {
@@ -975,6 +958,7 @@ var imgKarakter = document.getElementById('karakter-pemain');
   </body>
 
 </html>
+
 
 
 
