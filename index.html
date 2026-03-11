@@ -706,101 +706,106 @@ function kembaliKeAwal() {
 }
 
 function muatSoal() {
-  // Ambil data soal level sekarang
-  var d = dataSemuaSoal[levelSekarang];
-  if (!d) return;
+  // 1. Pastikan data soal ada
+  var dSoal = dataSemuaSoal[levelSekarang];
+  if (!dSoal) return;
 
-  // --- LOGIKA A: JIKA SOAL HABIS (PINDAH KE LAYAR SELESAI) ---
-  if (indeksSoalSekarang >= d.length) {
+  // --- LOGIKA A: JIKA SOAL HABIS (LULUS SABUK) ---
+  if (indeksSoalSekarang >= dSoal.length) {
+    // Simpan skor otomatis ke Sheet
     if (typeof simpanSkor === "function") simpanSkor();
 
-    var urutan = ["Putih", "Kuning", "Hijau", "Biru", "Coklat", "Hitam", "Post-Test"];
-    var idx = urutan.indexOf(levelSekarang);
+    // Gunakan satu nama variabel urutan yang pasti
+    var daftarLevel = ["Putih", "Kuning", "Hijau", "Biru", "Coklat", "Hitam", "Post-Test"];
+    var posisiSekarang = daftarLevel.indexOf(levelSekarang);
 
-    // Tukar Layar ke Layar Selesai (Desain Padding Ibu)
+    // TUKAR LAYAR (Ini kunci agar tidak blank)
     document.getElementById('layar-gameplay').style.display = 'none';
     document.getElementById('area-selesai').style.display = 'flex';
 
-    var judul = document.getElementById('judul-selesai');
-    var btn = document.getElementById('btn-lanjut-level');
+    var teksJudul = document.getElementById('judul-selesai');
+    var tombolLanjut = document.getElementById('btn-lanjut-level');
 
-    if (idx < urutan.length - 1) {
-      // Masih ada level selanjutnya (termasuk Post-Test)
-      var next = urutan[idx + 1];
-      judul.innerHTML = "LUAR BIASA!<br>LULUS UJIAN " + levelSekarang.toUpperCase();
+    if (posisiSekarang < daftarLevel.length - 1) {
+      // MASIH ADA LEVEL (Bisa lanjut ke Kuning, dst sampai Post-Test)
+      var levelNext = daftarLevel[posisiSekarang + 1];
+      teksJudul.innerHTML = "LUAR BIASA!<br>LULUS UJIAN SABUK " + levelSekarang.toUpperCase();
       
-      if (btn) {
-        btn.style.display = "block";
-        btn.innerText = "LANJUT KE " + next.toUpperCase() + " ►";
-        btn.onclick = function() {
-          levelSekarang = next;
+      if (tombolLanjut) {
+        tombolLanjut.style.display = "block";
+        tombolLanjut.innerText = "LANJUT KE " + levelNext.toUpperCase() + " ►";
+        tombolLanjut.onclick = function() {
+          levelSekarang = levelNext;
           indeksSoalSekarang = 0;
-          muatSoal(); 
+          muatSoal(); // Mulai soal sabuk baru
         };
       }
     } else {
-      // Tamat (Post-Test selesai)
-      judul.innerHTML = "MASTER NINJA!<br>SEMUA TINGKATAN SELESAI";
-      if (btn) btn.style.display = "none";
+      // TAMAT SEMUA (Post-Test Selesai)
+      teksJudul.innerHTML = "MASTER NINJA!<br>SEMUA TINGKATAN SELESAI";
+      if (tombolLanjut) tombolLanjut.style.display = "none";
     }
 
-    // Tampilkan Leaderboard
-    if (typeof muatLeaderboard === "function") muatLeaderboard();
-    return; 
+    // PANGGIL LEADERBOARD (Agar muncul di bawah tulisan Lulus)
+    if (typeof muatLeaderboard === "function") {
+      muatLeaderboard();
+    }
+    
+    return; // STOP DI SINI agar tidak blank hitam
   }
 
-  // --- LOGIKA B: JALANNYA GAME (MUNCULKAN SOAL) ---
+  // --- LOGIKA B: JALANNYA GAME (SOAL MASIH ADA) ---
   statusSoalAktif = true;
-  var soal = d[indeksSoalSekarang];
+  var sAktif = dSoal[indeksSoalSekarang];
 
-  // Pastikan layar judul hilang dan layar game muncul
+  // Munculkan layar game, sembunyikan layar lain
   document.getElementById('layar-judul').style.display = 'none';
   document.getElementById('layar-gameplay').style.display = 'block';
   document.getElementById('area-selesai').style.display = 'none';
   document.getElementById('papan-kontrol-css').style.display = 'grid';
   document.getElementById('area-soal').style.display = 'flex';
 
-  // Tampilkan Pertanyaan & Tanda ? (ID Sesuai file Ibu)
-  var t = document.getElementById('teks-pertanyaan');
-  if(t) t.innerText = (soal.pertanyaan || "").replace(/x/g, " x ");
+  // Tampilkan Pertanyaan & Tanda ?
+  var tPertanyaan = document.getElementById('teks-pertanyaan');
+  if(tPertanyaan) tPertanyaan.innerText = (sAktif.pertanyaan || "").replace(/x/g, " x ");
   
   inputAngka = ""; 
-  var j = document.getElementById('teks-jawaban');
-  if(j) j.innerText = "?";
+  var tJawaban = document.getElementById('teks-jawaban');
+  if(tJawaban) tJawaban.innerText = "?";
 
-  // Visual Sabuk (Logika request Ibu)
-  var urutanS = ["Putih", "Kuning", "Hijau", "Biru", "Coklat", "Hitam", "Post-Test"];
-  var iS = urutanS.indexOf(levelSekarang);
-  var sV = (iS > 0) ? urutanS[iS - 1] : "Putih";
+  // Atur Visual Sabuk (Request Ibu)
+  var urutanV = ["Putih", "Kuning", "Hijau", "Biru", "Coklat", "Hitam", "Post-Test"];
+  var idxV = urutanV.indexOf(levelSekarang);
+  var sVisual = (idxV > 0) ? urutanV[idxV - 1] : "Putih";
 
-  if (levelSekarang === "Hijau" || levelSekarang === "Biru") sV = "Putih";
-  else if (levelSekarang === "Coklat") sV = "Hijau";
-  else if (levelSekarang === "Hitam") sV = "Coklat";
-  else if (levelSekarang === "Post-Test") sV = "Hitam";
+  if (levelSekarang === "Hijau" || levelSekarang === "Biru") sVisual = "Putih";
+  else if (levelSekarang === "Coklat") sVisual = "Hijau";
+  else if (levelSekarang === "Hitam") sVisual = "Coklat";
+  else if (levelSekarang === "Post-Test") sVisual = "Hitam";
 
-  // Karakter Pemain
-  var img = document.getElementById('karakter-pemain');
-  if (img && asetKarakter[karakterPilih]) {
-      img.style.display = "block";
-      img.src = asetKarakter[karakterPilih][sV]["diam"];
+  // Update Gambar Ninja
+  var imgN = document.getElementById('karakter-pemain');
+  if (imgN && asetKarakter[karakterPilih]) {
+      imgN.style.display = "block";
+      imgN.src = asetKarakter[karakterPilih][sVisual]["diam"];
   }
 
-  // Ikon Sabuk UI
-  var ikon = document.getElementById('ikon-sabuk-ui');
-  if(ikon) {
-    ikon.style.display = "block";
-    ikon.src = asetSabuk[sV];
+  // Update Ikon Sabuk Atas
+  var ikonS = document.getElementById('ikon-sabuk-ui');
+  if(ikonS) {
+    ikonS.style.display = "block";
+    ikonS.src = asetSabuk[sVisual];
   }
   
   if(document.getElementById('tampil-sabuk')) {
-    document.getElementById('tampil-sabuk').innerText = "Sabuk " + sV;
+    document.getElementById('tampil-sabuk').innerText = "Sabuk " + sVisual;
   }
 
   // Reset Animasi Gulungan
-  var g = document.getElementById('area-soal');
-  if(g) {
-    g.classList.remove('animasi-tertebas', 'animasi-jatuh');
-    g.style.transform = "scaleX(1)";
+  var areaS = document.getElementById('area-soal');
+  if(areaS) {
+    areaS.classList.remove('animasi-tertebas', 'animasi-jatuh');
+    areaS.style.transform = "scaleX(1)";
   }
 
   if (typeof jalankanTimer === "function") jalankanTimer();
@@ -988,6 +993,7 @@ if (levelSekarang === "Kuning") {
   </body>
 
 </html>
+
 
 
 
