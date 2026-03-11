@@ -826,15 +826,31 @@ var imgKarakter = document.getElementById('karakter-pemain');
   // Tampilkan loading sebentar
   var isiLB = document.getElementById('isi-lb');
   if(isiLB) isiLB.innerHTML = "<tr><td colspan='4'>Memanggil Para Ninja...</td></tr>";
+// variabel global
+let skor = 0;
+let levelSekarang = 0;
 
+// TARUH DI SINI
+function sembunyikanKeypad(){
+  var k = document.getElementById('papan-kontrol-css');
+  if(k) k.style.display = "none";
+}
+
+function tampilkanKeypad(){
+  var k = document.getElementById('papan-kontrol-css');
+  if(k) k.style.display = "grid";
+}
   function tampilkanLeaderboard(data) {
   var isiLB = document.getElementById('isi-lb');
   var wadahLB = document.getElementById('tampil-leaderboard');
-  
+      
   if (!isiLB) return;
   
   // Paksa wadahnya muncul
   if(wadahLB) wadahLB.style.display = "flex"; // Biasanya pakai flex untuk overlay
+    // Sembunyikan papan tombol saat leaderboard muncul
+var keypad = document.getElementById('papan-kontrol-css');
+if(keypad) keypad.style.display = "none";
   
   isiLB.innerHTML = ""; 
 
@@ -1014,6 +1030,7 @@ if (levelSekarang === "Kuning") {
   </body>
 
 </html>
+
 
 
 
