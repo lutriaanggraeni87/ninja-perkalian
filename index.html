@@ -707,17 +707,17 @@ function kembaliKeAwal() {
 }
 
 function muatSoal() {
-  var daftarSoal = dataSemuaSoal[levelSekarang];
+  var dataSoalAktif = dataSemuaSoal[levelSekarang];
   
   // Jika soal habis, panggil fungsi BERHASIL LULUS
-  if (indeksSoalSekarang >= daftarSoal.length) {
-    berhasilLulus(); 
+  if (indeksSoalSekarang >= dataSoalAktif.length) {
+    tampilkanLayarBerhasil(); 
     return;
   }
 
   // Jika masih ada soal, tampilkan seperti biasa
   statusSoalAktif = true;
-  var soal = daftarSoal[indeksSoalSekarang];
+  var soal = dataSoalAktif[indeksSoalSekarang];
   document.getElementById('layar-gameplay').style.display = 'block';
   document.getElementById('area-selesai').style.display = 'none';
   document.getElementById('teks-pertanyaan').innerText = soal.pertanyaan.replace(/x/g, " x ");
@@ -752,7 +752,34 @@ function muatSoal() {
     console.log("Fungsi muatLeaderboard tidak ditemukan!");
   }
 }
-       
+ function tampilkanLayarBerhasil() {
+  console.log("Ujian Selesai, Menampilkan Layar Berhasil...");
+  
+  // 1. Simpan skor ke database
+  if (typeof simpanSkor === "function") simpanSkor();
+
+  // 2. Tukar Layar
+  document.getElementById('layar-gameplay').style.display = 'none';
+  var areaSelesai = document.getElementById('area-selesai');
+  areaSelesai.style.display = 'flex';
+
+  // 3. Pasang Tulisan Lulus
+  var judulSelesai = document.getElementById('judul-selesai');
+  if (judulSelesai) {
+    judulSelesai.innerHTML = "ALHAMDULILLAH!<br>LULUS SABUK " + levelSekarang.toUpperCase();
+  }
+
+  // 4. Panggil Leaderboard
+  panggilPeringkat();
+}
+      function panggilPeringkat() {
+  console.log("Memicu Leaderboard...");
+  if (typeof muatLeaderboard === "function") {
+    muatLeaderboard();
+  } else {
+    console.log("Error: Fungsi muatLeaderboard tidak ditemukan!");
+  }
+}
  function muatLeaderboard() {
   // Link ini harus link /exec Ibu yang terbaru
   const scriptURL = "https://script.google.com/macros/s/AKfycbzUpijkoMx9LcL1KaxJCcrDAy7ioR9fpY-JAQGL93ef8vuPYzkU2-SF_qnWvzUvnaBt/exec"; 
@@ -935,6 +962,7 @@ if (levelSekarang === "Kuning") {
   </body>
 
 </html>
+
 
 
 
