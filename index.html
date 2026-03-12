@@ -411,12 +411,12 @@
       var statusSoalAktif = false; 
 
       var asetSabuk = {
-        "Putih": "https://drive.google.com/thumbnail?id=1HyuRXFIRaNWpp-PFgp5kAhO4KTe2dr9u&sz=w200",
-        "Kuning": "https://drive.google.com/thumbnail?id=1q2SANdUFdnaT3bTkVWkSubLuFts6IL8d&sz=w200",
-        "Hijau": "https://drive.google.com/thumbnail?id=1kO6qkNvz21gGWqR87ioYm6pfFaq_qun5&sz=w200",
-        "Biru": "https://drive.google.com/thumbnail?id=1OaBC2retyIWOLEX_-ez-ghCmymS3gSTo&sz=w200",
-        "Coklat": "https://drive.google.com/thumbnail?id=1CemDmORw-TwFY1MbvSQTQng6TDkedtgz&sz=w200",
-        "Hitam": "https://drive.google.com/thumbnail?id=1V8XRxOpT1meU44u1TjpUhmuxNjYj6Rda&sz=w200"
+        "Putih": "https://drive.google.com/thumbnail?id=1HyuRXFIRaNWpp-PFgp5kAhO4KTe2dr9u&sz=w1000",
+        "Kuning": "https://drive.google.com/thumbnail?id=1q2SANdUFdnaT3bTkVWkSubLuFts6IL8d&sz=w1000",
+        "Hijau": "https://drive.google.com/thumbnail?id=1kO6qkNvz21gGWqR87ioYm6pfFaq_qun5&sz=w1000",
+        "Biru": "https://drive.google.com/thumbnail?id=1OaBC2retyIWOLEX_-ez-ghCmymS3gSTo&sz=w1000",
+        "Coklat": "https://drive.google.com/thumbnail?id=1CemDmORw-TwFY1MbvSQTQng6TDkedtgz&sz=w1000",
+        "Hitam": "https://drive.google.com/thumbnail?id=1V8XRxOpT1meU44u1TjpUhmuxNjYj6Rda&sz=w1000"
       };
 
       var asetKarakter = {
@@ -726,21 +726,16 @@ function muatSoal() {
   
   if (typeof jalankanTimer === "function") jalankanTimer();
 }
-      function berhasilLulus() {
-  // 1. Simpan skor dulu
+      function tampilkanLayarBerhasil() {
   if (typeof simpanSkor === "function") simpanSkor();
 
-  // 2. Ganti Tampilan (Matikan game, nyalakan layar selesai)
   document.getElementById('layar-gameplay').style.display = 'none';
-  document.getElementById('area-selesai').style.display = 'flex';
+  var areaSelesai = document.getElementById('area-selesai');
+  if (areaSelesai) areaSelesai.style.display = 'flex';
 
-  // 3. Update Tulisan Judul
   var judul = document.getElementById('judul-selesai');
-  if (judul) {
-    judul.innerHTML = "HEBAT!<br>LULUS UJIAN SABUK " + levelSekarang.toUpperCase();
-  }
-
-  // 4. Setelah layar siap, panggil LEADERBOARD
+  if (judul) judul.innerHTML = "HEBAT!<br>KAMU LULUS UJIAN SABUK " + levelSekarang.toUpperCase();
+       // 4. Setelah layar siap, panggil LEADERBOARD
   tampilkanPeringkat();
 }
       function tampilkanPeringkat() {
@@ -766,7 +761,7 @@ function muatSoal() {
   // 3. Pasang Tulisan Lulus
   var judulSelesai = document.getElementById('judul-selesai');
   if (judulSelesai) {
-    judulSelesai.innerHTML = "ALHAMDULILLAH!<br>LULUS SABUK " + levelSekarang.toUpperCase();
+    judulSelesai.innerHTML = "HEBAT!<br>KAMU LULUS SABUK " + levelSekarang.toUpperCase();
   }
 
   // 4. Panggil Leaderboard
@@ -962,6 +957,7 @@ if (levelSekarang === "Kuning") {
   </body>
 
 </html>
+
 
 
 
