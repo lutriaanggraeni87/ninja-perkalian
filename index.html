@@ -691,7 +691,7 @@ var imgKarakter = document.getElementById('karakter-pemain');
 function kembaliKeAwal() {
   // 1. Sembunyikan semua layar gameplay/selesai
   document.getElementById('layar-gameplay').style.display = 'none';
-  document.getElementById('area-selesai').style.display = 'none';
+  document.getElementById('area-selesai').style.display = 'flex';
   
   // 2. Munculkan kembali layar judul (isi nama)
   document.getElementById('layar-judul').style.display = 'flex';
@@ -933,7 +933,7 @@ if (levelSekarang === "Kuning") {
         
         // 5. JEDA DIPERLAMBAT (Dari 800ms menjadi 1200ms agar mata sempat melihat)
         setTimeout(function() {
-          if(feedback) feedback.style.display = 'none';
+          if(feedback) feedback.style.display = 'flex';
           
           // Kembalikan ukuran normal
           imgKarakter.style.transform = "translateX(-50%) scale(1)";
